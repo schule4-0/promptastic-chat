@@ -1,7 +1,6 @@
 import "./App.css";
 import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router";
-import Next from "./pages/Next";
 
 function App() {
   return (
@@ -9,7 +8,6 @@ function App() {
       <BrowserRouter basename="/promptastic-chat">
         <Routes>
           <Route index element={<Home />} />
-          <Route path="next" element={<Next />} />
         </Routes>
       </BrowserRouter>
     </div>
