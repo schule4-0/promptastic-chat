@@ -6,7 +6,7 @@ import Next from "./pages/Next";
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      <BrowserRouter basename="/promptastic-chat">
         <Routes>
           <Route index element={<Home />} />
           <Route path="next" element={<Next />} />
