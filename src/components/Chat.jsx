@@ -7,13 +7,13 @@ export default function Chat({
   initialPrompt = "",
   setFinalPrompt = () => {},
   think = false,
-  host = "http://127.0.0.1:11434",
 }) {
   const [prompt1, setPrompt1] = useState("");
   const [prompt2, setPrompt2] = useState("  ");
   const [output, setOutput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [llm, setLlm] = useState(true);
+  const [host, setHost] = useState("http://127.0.0.1:11434");
 
   const chat = async () => {
     setOutput("");
@@ -27,6 +27,7 @@ export default function Chat({
         stream: true,
         think: think,
       });
+      setLlm(true);
       setIsThinking(think);
       let isAnswering = !think;
       let thoughts = "";
@@ -51,11 +52,11 @@ export default function Chat({
   //   const current = e.target.value;
   //   if (current.startsWith(initialPrompt)) {
   //     setPrompt(current);
-  //   }
+  //   } 230, 236, 251
   // };
 
   return (
-    <div>
+    <div className="flex flex-col w-full h-full gap-[25px] p-[20px] bg-[#e6ecfb] rounded-[10px]">
       {llm === false && (
         <div style={{ color: "red" }}>
           Can't connect to ollama on {host} and run qwen3:0.6b
@@ -63,28 +64,43 @@ export default function Chat({
       )}
       {isThinking && <p>thinking...</p>}
       {}
-      <div>{output}</div>
-      <textarea
-        onChange={(e) => setPrompt1(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && chat()}
-        value={prompt1}
-        size={120}
-        type="text"
-      ></textarea>
-      {initialPrompt && (
-        <>
-          <div>{initialPrompt}</div>
-          <textarea
-            onChange={(e) => setPrompt2(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && chat()}
-            value={prompt2}
-            size={120}
-            type="text"
-          ></textarea>
-        </>
-      )}
-      <br></br>
-      <button onClick={chat}>Send</button>
+      <div className="bg-white rounded-[10px]">
+        <textarea
+          onChange={(e) => setPrompt1(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && chat()}
+          value={prompt1}
+          size={140}
+          type="text"
+        ></textarea>
+        {initialPrompt && (
+          <>
+            <div>{initialPrompt}</div>
+            <textarea
+              onChange={(e) => setPrompt2(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && chat()}
+              value={prompt2}
+              size={120}
+              type="text"
+            ></textarea>
+          </>
+        )}
+        <br></br>
+        <button
+          onClick={chat}
+          className="bg-green-500 border border-black px-2"
+        >
+          Send
+        </button>
+      </div>
+      <div className="grow bg-white rounded-[10px]">{output}</div>
+      <details>
+        <summary>Settings</summary>
+        <input
+          type="text"
+          value={host}
+          onChange={(e) => setHost(e.target.value)}
+        ></input>
+      </details>
     </div>
   );
 }
