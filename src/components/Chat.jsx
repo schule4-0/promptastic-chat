@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ollama from "ollama/browser";
+import { Ollama } from "ollama/browser";
 
 // Meine Lieblingsfrage: What time is it?
 
@@ -7,6 +7,7 @@ export default function Chat({
   initialPrompt = "",
   setFinalPrompt = () => {},
   think = false,
+  host = "http://127.0.0.1:11434",
 }) {
   const [prompt1, setPrompt1] = useState("");
   const [prompt2, setPrompt2] = useState("  ");
@@ -18,7 +19,9 @@ export default function Chat({
     setOutput("");
     const finalPrompt = `${prompt1} ${initialPrompt} ${prompt2}`;
     try {
-      const response = await ollama.chat({
+      const ollamaClient = new Ollama({ host });
+      console.log((await ollamaClient.list()).models.map((elm) => elm.model));
+      const response = await ollamaClient.chat({
         model: "qwen3:0.6b",
         messages: [{ role: "user", content: finalPrompt }],
         stream: true,
@@ -55,7 +58,7 @@ export default function Chat({
     <div>
       {llm === false && (
         <div style={{ color: "red" }}>
-          Can't connect to ollama on port 11434 and run qwen3:0.6b
+          Can't connect to ollama on {host} and run qwen3:0.6b
         </div>
       )}
       {isThinking && <p>thinking...</p>}

@@ -3,6 +3,7 @@ import Chat from "../components/Chat";
 
 export default function Home() {
   const [initialPrompt, setInitialPrompt] = useState("");
+  const [host, setHost] = useState("http://127.0.0.1:11434");
 
   useEffect(() => {
     if (localStorage.getItem("prompt")) {
@@ -20,7 +21,13 @@ export default function Home() {
       <Chat
         initialPrompt={initialPrompt}
         setFinalPrompt={setFinalPrompt}
+        host={host}
       ></Chat>
+      <input
+        type="text"
+        value={host}
+        onChange={(e) => setHost(e.target.value)}
+      ></input>
     </div>
   );
 }
