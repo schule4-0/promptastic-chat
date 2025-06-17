@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AzureOpenAI } from 'openai'
 
 // Meine Lieblingsfrage: What time is it?
@@ -12,7 +12,11 @@ export default function Chat({ initialPrompt = '', setFinalPrompt = () => {} }) 
   const [prompt2, setPrompt2] = useState('  ')
   const [output, setOutput] = useState('')
   const [llm, setLlm] = useState(true)
-  const [apiKey, setApiKey] = useState(process.env['AZURE_OPENAI_API_KEY'] || null)
+
+  useEffect(() => {
+    localStorage.getItem('apiKey') || localStorage.setItem('apiKey', '<ENTER API KEY>')
+    localStorage.getItem('systemPrompt') || localStorage.setItem('systemPrompt', '')
+  }, [])
 
   const chat = async () => {
     setOutput('')
@@ -20,25 +24,29 @@ export default function Chat({ initialPrompt = '', setFinalPrompt = () => {} }) 
     try {
       const client = new AzureOpenAI({
         endpoint,
-        apiKey,
+        apiKey: localStorage.getItem('apiKey'),
         apiVersion,
         deployment,
         dangerouslyAllowBrowser: true,
       })
-      const result = await client.chat.completions.create({
-        stream: true,
-        messages: [
+      let prompt = [
+        {
+          role: 'assistant',
+          content: finalPrompt,
+        },
+      ]
+      if (localStorage.getItem('systemPrompt')) {
+        prompt = [
           {
             role: 'system',
-            content:
-              process.env['SYSTEM_PROMPT'] ||
-              'Du bist ein KI Agent der Kindern in der Grundschule hilft, das CRAFT Framework zu verstehen, indem du die Prompts der Kinder vervollständigst.',
+            content: localStorage.getItem('systemPrompt'),
           },
-          {
-            role: 'assistant',
-            content: finalPrompt,
-          },
-        ],
+          ...prompt,
+        ]
+      }
+      const result = await client.chat.completions.create({
+        stream: true,
+        messages: prompt,
         max_tokens: 800,
         temperature: 1, // between 0 and 1. 0 is deterministic
         top_p: 1, // word diversitry
@@ -92,10 +100,6 @@ export default function Chat({ initialPrompt = '', setFinalPrompt = () => {} }) 
         </button>
       </div>
       <div className="grow bg-white rounded-[10px]">{output}</div>
-      <details>
-        <summary>Settings</summary>
-        <input type="text" value={apiKey} onChange={(e) => setApiKey(e.target.value)}></input>
-      </details>
     </div>
   )
 }

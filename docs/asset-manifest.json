@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/promptastic-chat/static/css/main.797a3677.css",
-    "main.js": "/promptastic-chat/static/js/main.68726c94.js",
+    "main.js": "/promptastic-chat/static/js/main.01105aeb.js",
     "static/js/453.c1da9bb3.chunk.js": "/promptastic-chat/static/js/453.c1da9bb3.chunk.js",
     "index.html": "/promptastic-chat/index.html",
     "main.797a3677.css.map": "/promptastic-chat/static/css/main.797a3677.css.map",
-    "main.68726c94.js.map": "/promptastic-chat/static/js/main.68726c94.js.map",
+    "main.01105aeb.js.map": "/promptastic-chat/static/js/main.01105aeb.js.map",
     "453.c1da9bb3.chunk.js.map": "/promptastic-chat/static/js/453.c1da9bb3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.797a3677.css",
-    "static/js/main.68726c94.js"
+    "static/js/main.01105aeb.js"
   ]
 }
