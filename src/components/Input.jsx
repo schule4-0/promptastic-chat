@@ -44,7 +44,7 @@ const Input = ({ id, initialPrompt }) => {
   return (
     <div
       id={id}
-      className="min-h-20"
+      className="h-24 overflow-y-auto"
       contentEditable="plaintext-only"
       suppressContentEditableWarning={true}
     >

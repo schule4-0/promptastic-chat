@@ -98,7 +98,7 @@ export default function Chat({ initialPrompt = '', setFinalPrompt = () => {} }) 
           Senden
         </button>
       </div>
-      <div className="grow bg-white rounded-[10px] prose max-w-none">
+      <div className="grow bg-white rounded-[10px] prose max-w-none overflow-y-auto">
         {blockMatches.map((blockMatch, index) => {
           const Component = blockMatch.block.component
           return <Component key={index} blockMatch={blockMatch} />
