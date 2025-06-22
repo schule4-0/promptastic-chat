@@ -3,27 +3,30 @@ import { AzureOpenAI } from 'openai'
 import { useLLMOutput } from '@llm-ui/react'
 import { markdownLookBack } from '@llm-ui/markdown'
 import MarkdownComponent from './MarkdownComponent'
+import Input from './Input'
 
 const endpoint = process.env['AZURE_OPENAI_ENDPOINT'] || 'https://promptastic.openai.azure.com/'
 const deployment = process.env['DEPLOYMENT'] || 'gpt-4.1-nano'
 const apiVersion = process.env['API_VERSION'] || '2025-01-01-preview'
 
 export default function Chat({ initialPrompt = '', setFinalPrompt = () => {} }) {
-  const [prompt1, setPrompt1] = useState('')
-  const [prompt2, setPrompt2] = useState('  ')
   const [output, setOutput] = useState('')
   const [isStreamFinished, setIsStreamFinished] = useState(false)
   const [llm, setLlm] = useState(true)
 
   useEffect(() => {
     localStorage.getItem('apiKey') || localStorage.setItem('apiKey', '<ENTER API KEY>')
-    localStorage.getItem('systemPrompt') || localStorage.setItem('systemPrompt', '')
+    localStorage.getItem('systemPrompt') ||
+      localStorage.setItem(
+        'systemPrompt',
+        'Du bist eine freundliche, kluge Künstliche Intelligenz, die detailliert und sehr ausführlich antwortet. Schneide die Antwort wirklich auf die Rolle zu. Begrenze die Antwort auf 120 Wörter.'
+      )
   }, [])
 
   const chat = async () => {
+    const finalPrompt = document.getElementById('inputElement').innerText
     setIsStreamFinished(false)
     setOutput('')
-    const finalPrompt = `${prompt1} ${initialPrompt} ${prompt2}`
     try {
       const client = new AzureOpenAI({
         endpoint,
@@ -86,31 +89,13 @@ export default function Chat({ initialPrompt = '', setFinalPrompt = () => {} }) 
   return (
     <div className="flex flex-col w-full h-full gap-[25px] p-[20px] bg-[#e6ecfb] rounded-[10px]">
       {llm === false && <div style={{ color: 'red' }}>Can't connect to LLM</div>}
-      <div className="bg-white rounded-[10px]">
-        <textarea
-          onChange={(e) => setPrompt1(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && chat()}
-          value={prompt1}
-          type="text"
-          rows={3}
-          className="w-full"
-        ></textarea>
-        {initialPrompt && (
-          <>
-            <div>{initialPrompt}</div>
-            <textarea
-              onChange={(e) => setPrompt2(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && chat()}
-              value={prompt2}
-              type="text"
-              rows={3}
-              className="w-full"
-            ></textarea>
-          </>
-        )}
-        <br></br>
-        <button onClick={chat} className="bg-green-500 border border-black px-2">
-          Send
+      <div className="bg-white rounded-[10px] relative">
+        <Input id="inputElement" initialPrompt={initialPrompt}></Input>
+        <button
+          onClick={chat}
+          className="absolute right-2 bottom-2 bg-green-200 hover:bg-green-400 border border-black rounded-[10px] px-2"
+        >
+          Senden
         </button>
       </div>
       <div className="grow bg-white rounded-[10px] prose max-w-none">
