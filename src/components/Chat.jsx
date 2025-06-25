@@ -68,21 +68,21 @@ export default function Chat({
   })
 
   return (
-    <div className="flex flex-col w-full h-full gap-[25px] p-[20px] bg-[#e6ecfb] rounded-[10px]">
+    <div className="flex flex-col w-full h-full gap-[8px] p-[20px] bg-[#e6ecfb] rounded-[10px]">
       <div className="bg-white rounded-[10px] relative">
         <Input
           id="inputElement"
           initialPrompt={initialPrompt}
           clearInitialPrompt={clearPrompt}
         ></Input>
-        <button
-          onClick={chat}
-          className="absolute right-2 bottom-2 bg-p-blue text-white font-bold hover:bg-p-blue-200 border border-black rounded-[10px] px-2 leading-6"
-        >
-          Senden
-        </button>
       </div>
-      <div className="grow bg-white rounded-[10px] prose  max-w-none overflow-y-auto">
+      <button
+        onClick={chat}
+        className=" bg-p-blue text-white font-bold hover:bg-p-blue-200 border border-black rounded-[10px] px-2 leading-6"
+      >
+        Senden
+      </button>
+      <div className="grow bg-white rounded-[10px] prose  max-w-none overflow-y-auto p-1">
         {blockMatches.map((blockMatch, index) => {
           const Component = blockMatch.block.component
           return <Component key={index} blockMatch={blockMatch} />

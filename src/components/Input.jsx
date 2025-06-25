@@ -59,7 +59,7 @@ const Input = ({ id, initialPrompt, clearInitialPrompt }) => {
   return (
     <div
       id={id}
-      className="h-24 overflow-y-auto"
+      className="h-24 overflow-y-auto p-1"
       contentEditable="plaintext-only"
       suppressContentEditableWarning={true}
       onKeyDown={handleKeyboardShortcut}
