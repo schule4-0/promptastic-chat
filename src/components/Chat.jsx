@@ -10,7 +10,7 @@ export default function Chat({
   askForPassword = () => {},
   clearPrompt = () => {},
 }) {
-  const [output, setOutput] = useState('')
+  const [output, setOutput] = useState(localStorage.getItem('lastAnswer') || '')
   const [isStreamFinished, setIsStreamFinished] = useState(false)
 
   const chat = async () => {
@@ -38,16 +38,19 @@ export default function Chat({
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
 
+      let outputBuffer = ''
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
         const chunk = decoder.decode(value)
         // Process streaming chunk
         setOutput((output) => output + chunk)
+        outputBuffer += chunk
       }
 
       setIsStreamFinished(true)
       setFinalPrompt(finalPrompt)
+      localStorage.setItem('lastAnswer', outputBuffer)
     } catch (e) {
       console.error(e)
       if (e) setFinalPrompt(initialPrompt)
