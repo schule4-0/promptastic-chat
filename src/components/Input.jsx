@@ -65,8 +65,8 @@ const Input = ({ id, initialPrompt, clearInitialPrompt }) => {
       onKeyDown={handleKeyboardShortcut}
     >
       {initialPrompt && (
-        <span className="cursor-not-allowed bg-orange-100" contentEditable={false}>
-          {initialPrompt}
+        <span className="cursor-not-allowed bg-orange-100 mx-3" contentEditable={false}>
+          &nbsp;{initialPrompt}&nbsp;
         </span>
       )}
     </div>

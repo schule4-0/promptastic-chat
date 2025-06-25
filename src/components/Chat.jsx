@@ -49,7 +49,7 @@ export default function Chat({
       }
 
       setIsStreamFinished(true)
-      setFinalPrompt(finalPrompt)
+      setFinalPrompt(finalPrompt.trim())
       localStorage.setItem('lastAnswer', outputBuffer)
     } catch (e) {
       console.error(e)
