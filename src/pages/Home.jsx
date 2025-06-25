@@ -2,22 +2,24 @@ import { useEffect, useState } from 'react'
 import Chat from '../components/Chat'
 import Modal from '../components/Modal'
 
-export default function Home() {
+export default function Home({ freeMode = false }) {
   const [initialPrompt, setInitialPrompt] = useState('')
   const [modal, setModal] = useState(localStorage.getItem('password') == null)
 
   useEffect(() => {
-    if (localStorage.getItem('prompt')) {
+    if (freeMode === false && localStorage.getItem('prompt')) {
       setInitialPrompt(localStorage.getItem('prompt'))
     }
   }, [])
 
   const setFinalPrompt = (value) => {
-    localStorage.setItem('prompt', value)
+    if (freeMode === false) localStorage.setItem('prompt', value)
   }
   const clearPrompt = () => {
-    localStorage.removeItem('prompt')
-    setInitialPrompt('')
+    if (freeMode === false) {
+      localStorage.removeItem('prompt')
+      setInitialPrompt('')
+    }
   }
 
   return (
